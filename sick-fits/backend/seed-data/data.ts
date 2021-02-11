@@ -1,9 +1,9 @@
-function timestamp() {
+const getTimestamp = (): string => {
   // sometime in the last 30 days
-  const stampy =
+  const timestamp =
     Date.now() - Math.floor(Math.random() * 1000 * 60 * 60 * 24 * 30);
-  return new Date(stampy).toISOString();
-}
+  return new Date(timestamp).toISOString();
+};
 
 export const products = [
   {
@@ -25,7 +25,7 @@ export const products = [
         height: 457,
         format: 'jpg',
         resource_type: 'image',
-        created_at: timestamp(),
+        created_at: getTimestamp(),
         tags: [],
         bytes: 27871,
         type: 'upload',
@@ -64,7 +64,7 @@ export const products = [
         height: 640,
         format: 'jpg',
         resource_type: 'image',
-        created_at: timestamp(),
+        created_at: getTimestamp(),
         tags: [],
         bytes: 45455,
         type: 'upload',
@@ -103,7 +103,7 @@ export const products = [
         height: 2000,
         format: 'jpg',
         resource_type: 'image',
-        created_at: timestamp(),
+        created_at: getTimestamp(),
         tags: [],
         bytes: 202924,
         type: 'upload',
@@ -142,7 +142,7 @@ export const products = [
         height: 1490,
         format: 'png',
         resource_type: 'image',
-        created_at: timestamp(),
+        created_at: getTimestamp(),
         tags: [],
         bytes: 2454948,
         type: 'upload',
@@ -181,7 +181,7 @@ export const products = [
         height: 735,
         format: 'jpg',
         resource_type: 'image',
-        created_at: timestamp(),
+        created_at: getTimestamp(),
         tags: [],
         bytes: 183071,
         type: 'upload',
@@ -220,7 +220,7 @@ export const products = [
         height: 1144,
         format: 'jpg',
         resource_type: 'image',
-        created_at: timestamp(),
+        created_at: getTimestamp(),
         tags: [],
         bytes: 286643,
         type: 'upload',
@@ -259,7 +259,7 @@ export const products = [
         height: 683,
         format: 'jpg',
         resource_type: 'image',
-        created_at: timestamp(),
+        created_at: getTimestamp(),
         tags: [],
         bytes: 146817,
         type: 'upload',
@@ -298,7 +298,7 @@ export const products = [
         height: 1004,
         format: 'png',
         resource_type: 'image',
-        created_at: timestamp(),
+        created_at: getTimestamp(),
         tags: [],
         bytes: 953657,
         type: 'upload',
@@ -337,7 +337,7 @@ export const products = [
         height: 2000,
         format: 'jpg',
         resource_type: 'image',
-        created_at: timestamp(),
+        created_at: getTimestamp(),
         tags: [],
         bytes: 515360,
         type: 'upload',
@@ -376,7 +376,7 @@ export const products = [
         height: 650,
         format: 'jpg',
         resource_type: 'image',
-        created_at: timestamp(),
+        created_at: getTimestamp(),
         tags: [],
         bytes: 71291,
         type: 'upload',
@@ -415,7 +415,7 @@ export const products = [
         height: 800,
         format: 'jpg',
         resource_type: 'image',
-        created_at: timestamp(),
+        created_at: getTimestamp(),
         tags: [],
         bytes: 180261,
         type: 'upload',
@@ -454,7 +454,7 @@ export const products = [
         height: 372,
         format: 'jpg',
         resource_type: 'image',
-        created_at: timestamp(),
+        created_at: getTimestamp(),
         tags: [],
         bytes: 50754,
         type: 'upload',
