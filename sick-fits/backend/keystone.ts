@@ -1,5 +1,8 @@
+import { createAuth } from '@keystone-next/auth';
 import { config, createSchema } from '@keystone-next/keystone/schema';
+import { statelessSessions, withItemData } from '@keystone-next/keystone/session';
 import 'dotenv/config';
+import { User } from './schemas/User';
 
 const databaseURL = process.env.DATABASE_URL || 'mongodb://localhost/sick-fits';
 
@@ -8,7 +11,17 @@ const sessionConfig = {
   secret: process.env.COOKIE_SECRET,
 };
 
-export default config({
+const { withAuth } = createAuth({
+  listKey: 'User',
+  identityField: 'email',
+  secretField: 'password',
+  initFirstItem: {
+    fields: ['name', 'email', 'password'],
+  },
+})
+
+// @ts-ignore
+export default withAuth(config({
   server: {
     cors: {
       origin: [process.env.FRONTEND_URL],
@@ -19,8 +32,13 @@ export default config({
     adapter: 'mongoose',
     url: databaseURL,
   },
-  lists: createSchema({}),
+  lists: createSchema({
+    User
+  }),
   ui: {
-    isAccessAllowed: () => true,
+    isAccessAllowed: ({ session }) => !!session?.data,
   },
-});
+  session: withItemData(statelessSessions(sessionConfig), {
+    User: 'id name email',
+  }),
+}));
