@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const Title = styled.h3`
+const TitleStyles = styled.h3`
   margin: 0 1rem;
   text-align: center;
   transform: skew(-5deg) rotate(-1deg);
@@ -17,4 +17,4 @@ const Title = styled.h3`
   }
 `;
 
-export default Title;
+export default TitleStyles;

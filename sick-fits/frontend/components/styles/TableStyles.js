@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const Table = styled.table`
+const TableStyles = styled.table`
   border-spacing: 0;
   width: 100%;
   border: 1px solid var(--offWhite);
@@ -28,4 +28,4 @@ const Table = styled.table`
   }
 `;
 
-export default Table;
+export default TableStyles;

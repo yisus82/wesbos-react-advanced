@@ -5,8 +5,8 @@ import { createUploadLink } from 'apollo-upload-client';
 import withApollo from 'next-with-apollo';
 import { endpoint, prodEndpoint } from '../config';
 
-function createClient({ headers, initialState }) {
-  return new ApolloClient({
+const createClient = ({ headers, initialState }) =>
+  new ApolloClient({
     link: ApolloLink.from([
       onError(({ graphQLErrors, networkError }) => {
         if (graphQLErrors)
@@ -42,6 +42,5 @@ function createClient({ headers, initialState }) {
     }).restore(initialState || {}),
     connectToDevTools: process.env.NODE_ENV === 'development',
   });
-}
 
 export default withApollo(createClient, { getDataFromTree });

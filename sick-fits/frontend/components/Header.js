@@ -2,7 +2,7 @@ import Link from 'next/link';
 import styled from 'styled-components';
 import Nav from './Nav';
 
-const Logo = styled.h1`
+const LogoStyles = styled.h1`
   background-color: var(--red, red);
   font-size: 4rem;
   margin-left: 2rem;
@@ -36,9 +36,9 @@ const HeaderStyles = styled.header`
 const Header = () => (
   <HeaderStyles>
     <div className="bar">
-      <Logo>
+      <LogoStyles>
         <Link href="/">Sick Fits</Link>
-      </Logo>
+      </LogoStyles>
     </div>
     <div className="sub-bar">
       <p>Search</p>

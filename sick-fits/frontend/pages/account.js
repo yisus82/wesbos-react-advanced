@@ -1,3 +1,3 @@
-const Account = () => <p>Account</p>;
+const AccountPage = () => <p>Account</p>;
 
-export default Account;
+export default AccountPage;

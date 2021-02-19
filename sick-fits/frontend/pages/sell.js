@@ -1,3 +1,3 @@
-const Sell = () => <p>Sell</p>;
+const SellPage = () => <p>Sell</p>;
 
-export default Sell;
+export default SellPage;

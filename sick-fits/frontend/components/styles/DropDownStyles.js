@@ -1,13 +1,13 @@
 import styled, { keyframes } from 'styled-components';
 
-const DropDown = styled.div`
+const DropDownStyles = styled.div`
   position: absolute;
   width: 100%;
   z-index: 2;
   border: 1px solid var(--lightGray);
 `;
 
-const DropDownItem = styled.div`
+const DropDownItemStyles = styled.div`
   border-bottom: 1px solid var(--lightGray);
   background: ${(props) => (props.highlighted ? '#f7f7f7' : 'white')};
   padding: 1rem;
@@ -45,4 +45,4 @@ const SearchStyles = styled.div`
   }
 `;
 
-export { DropDown, DropDownItem, SearchStyles };
+export { DropDownStyles, DropDownItemStyles, SearchStyles };
