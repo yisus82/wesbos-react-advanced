@@ -40,6 +40,7 @@ function createClient({ headers, initialState }) {
         },
       },
     }).restore(initialState || {}),
+    connectToDevTools: true,
   });
 }
 
