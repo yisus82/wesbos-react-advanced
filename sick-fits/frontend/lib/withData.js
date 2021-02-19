@@ -40,7 +40,7 @@ function createClient({ headers, initialState }) {
         },
       },
     }).restore(initialState || {}),
-    connectToDevTools: true,
+    connectToDevTools: process.env.NODE_ENV === 'development',
   });
 }
 
