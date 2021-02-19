@@ -7,4 +7,9 @@ export const User = list({
     email: text({ isRequired: true, isUnique: true }),
     password: password(),
   },
+  ui: {
+    listView: {
+      initialColumns: ['name', 'email', 'password'],
+    },
+  },
 });

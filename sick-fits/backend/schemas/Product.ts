@@ -32,4 +32,9 @@ export const Product = list({
     }),
     price: integer(),
   },
+  ui: {
+    listView: {
+      initialColumns: ['name', 'description', 'photo', 'status', 'price'],
+    },
+  },
 });
