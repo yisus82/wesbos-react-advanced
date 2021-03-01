@@ -27,6 +27,9 @@ const FormStyles = styled.form`
   textarea {
     resize: none;
   }
+  input {
+    min-height: 30px;
+  }
   input,
   textarea,
   select {

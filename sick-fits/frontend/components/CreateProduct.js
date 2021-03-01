@@ -1,31 +1,61 @@
+import { useMutation } from '@apollo/client';
+import gql from 'graphql-tag';
 import useForm from '../lib/useForm';
+import DisplayError from './ErrorMessage';
 import FormStyles from './styles/FormStyles';
 
+const CREATE_PRODUCT_MUTATION = gql`
+  mutation CREATE_PRODUCT_MUTATION(
+    $image: Upload!
+    $name: String!
+    $price: Int!
+    $description: String!
+  ) {
+    createProduct(
+      data: {
+        photo: { create: { image: $image, altText: $description } }
+        name: $name
+        price: $price
+        description: $description
+        status: "AVAILABLE"
+      }
+    ) {
+      id
+      name
+      price
+      description
+    }
+  }
+`;
+
 const CreateProduct = () => {
-  const { inputValues, handleChange } = useForm({
-    image: [''],
+  const { inputValues, handleChange, clearForm } = useForm({
+    image: '',
     name: '',
     price: 0,
     description: '',
   });
 
-  const handleSubmit = (event) => {
+  const [createProduct, { data, error, loading }] = useMutation(
+    CREATE_PRODUCT_MUTATION,
+    {
+      variables: inputValues,
+    }
+  );
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log('inputValues', inputValues);
+    await createProduct();
+    clearForm();
   };
 
   return (
     <FormStyles onSubmit={handleSubmit}>
-      <fieldset>
+      <DisplayError error={error} />
+      <fieldset disabled={loading} aria-busy={loading}>
         <label htmlFor="image">
           Image
-          <input
-            type="file"
-            id="image"
-            name="image"
-            onChange={handleChange}
-            required
-          />
+          <input type="file" id="image" name="image" onChange={handleChange} />
         </label>
         <label htmlFor="name">
           Name

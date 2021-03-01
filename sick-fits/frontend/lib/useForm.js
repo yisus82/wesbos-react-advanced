@@ -6,12 +6,28 @@ const useForm = (initialInputValues = {}) => {
   const getInitialValue = (value) =>
     typeof value === 'number' ? 0 : Array.isArray(value) ? [] : '';
 
+  const parseValue = (value, type, files) => {
+    if (type === 'number') {
+      const newValue = parseInt(value, 10);
+      if (Number.isNaN(newValue)) {
+        return '';
+      }
+      return newValue;
+    }
+
+    if (type === 'file') {
+      return files[0];
+    }
+
+    return value;
+  };
+
   const handleChange = (event) => {
     const { value, name, type, files } = event.target;
 
     setInputValues({
       ...inputValues,
-      [name]: type === 'number' ? +value : type === 'file' ? [...files] : value,
+      [name]: parseValue(value, type, files),
     });
   };
 
