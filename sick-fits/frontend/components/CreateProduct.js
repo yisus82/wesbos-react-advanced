@@ -1,7 +1,9 @@
 import { useMutation } from '@apollo/client';
 import gql from 'graphql-tag';
+import { useRouter } from 'next/router';
 import useForm from '../lib/useForm';
 import DisplayError from './ErrorMessage';
+import { ALL_PRODUCTS_QUERY } from './Products';
 import FormStyles from './styles/FormStyles';
 
 const CREATE_PRODUCT_MUTATION = gql`
@@ -40,13 +42,19 @@ const CreateProduct = () => {
     CREATE_PRODUCT_MUTATION,
     {
       variables: inputValues,
+      refetchQueries: [{ query: ALL_PRODUCTS_QUERY }],
     }
   );
+
+  const router = useRouter();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     await createProduct();
     clearForm();
+    router.push({
+      pathname: `/products/${data.createProduct.id}`,
+    });
   };
 
   return (
@@ -55,7 +63,13 @@ const CreateProduct = () => {
       <fieldset disabled={loading} aria-busy={loading}>
         <label htmlFor="image">
           Image
-          <input type="file" id="image" name="image" onChange={handleChange} />
+          <input
+            type="file"
+            id="image"
+            name="image"
+            onChange={handleChange}
+            required
+          />
         </label>
         <label htmlFor="name">
           Name
@@ -76,7 +90,7 @@ const CreateProduct = () => {
             id="price"
             name="price"
             placeholder="Price"
-            value={inputValues.price}
+            value={inputValues.price.toString()}
             onChange={handleChange}
             min={0}
             required
