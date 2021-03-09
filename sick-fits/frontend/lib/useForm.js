@@ -1,7 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const useForm = (initialInputValues = {}) => {
   const [inputValues, setInputValues] = useState(initialInputValues);
+  const initialValues = Object.values(initialInputValues).join(', ');
+
+  useEffect(() => {
+    setInputValues(initialInputValues);
+  }, [initialValues]);
 
   const getInitialValue = (value) =>
     typeof value === 'number' ? 0 : Array.isArray(value) ? [] : '';
