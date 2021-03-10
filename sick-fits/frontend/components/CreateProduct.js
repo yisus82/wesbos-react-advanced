@@ -38,7 +38,7 @@ const CreateProduct = () => {
     description: '',
   });
 
-  const [createProduct, { data, error, loading }] = useMutation(
+  const [createProduct, { error, loading }] = useMutation(
     CREATE_PRODUCT_MUTATION,
     {
       variables: inputValues,
@@ -50,10 +50,10 @@ const CreateProduct = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    await createProduct();
+    const res = await createProduct();
     clearForm();
     router.push({
-      pathname: `/products/${data.createProduct.id}`,
+      pathname: `/products/${res.data.createProduct.id}`,
     });
   };
 
