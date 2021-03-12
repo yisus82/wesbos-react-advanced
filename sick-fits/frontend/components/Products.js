@@ -1,6 +1,7 @@
 import { useQuery } from '@apollo/client';
 import gql from 'graphql-tag';
 import styled from 'styled-components';
+import DisplayError from './ErrorMessage';
 import Product from './Product';
 
 export const ALL_PRODUCTS_QUERY = gql`
@@ -37,7 +38,7 @@ const Products = () => {
   }
 
   if (error) {
-    return <p>Error: {error.message}</p>;
+    return <DisplayError error={error} />;
   }
 
   return (
