@@ -36,14 +36,14 @@ const Pagination = ({ page = 1 }) => {
           Sick Fits | Page {page} of {totalPages}
         </title>
       </Head>
-      <Link href={`products/${page - 1}`}>
+      <Link href={`/products/${page - 1}`}>
         <a aria-disabled={page <= 1}>← Prev</a>
       </Link>
       <p>
         Page {page} of {totalPages}
       </p>
       <p>{count} items total</p>
-      <Link href={`products/${page + 1}`}>
+      <Link href={`/products/${page + 1}`}>
         <a aria-disabled={page >= totalPages}>Next →</a>
       </Link>
     </PaginationStyles>

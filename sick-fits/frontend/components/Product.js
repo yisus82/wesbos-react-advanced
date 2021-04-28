@@ -10,7 +10,7 @@ const Product = ({ product }) => (
   <ItemStyles>
     <img src={product.photo?.image?.publicUrlTransformed} alt={product.name} />
     <TitleStyles>
-      <Link href={`/products/${product.id}`}>{product.name}</Link>
+      <Link href={`/product/${product.id}`}>{product.name}</Link>
     </TitleStyles>
     <PriceTagStyles>{formatMoney(product.price)}</PriceTagStyles>
     <p>{product.description}</p>
