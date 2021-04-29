@@ -4,12 +4,13 @@ import Products from '../../components/Products';
 
 const ProductsIndexPage = () => {
   const { query: { page = 1 } = {} } = useRouter();
+  const currentPage = +page;
 
   return (
     <div>
-      <Pagination page={+page} />
-      <Products />
-      <Pagination page={+page} />
+      <Pagination page={currentPage} />
+      <Products page={currentPage} />
+      <Pagination page={currentPage} />
     </div>
   );
 };
