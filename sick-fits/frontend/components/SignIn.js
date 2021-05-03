@@ -37,7 +37,6 @@ const SignIn = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     await signin();
-    console.log('data :>> ', data);
     resetForm();
   };
   const error =
@@ -48,9 +47,9 @@ const SignIn = () => {
 
   return (
     <FormStyles method="POST" onSubmit={handleSubmit}>
-      <h2>Sing Into Your Account</h2>
+      <h2>Sign Into Your Account</h2>
       <DisplayError error={error} />
-      <fieldset>
+      <fieldset disabled={loading} aria-busy={loading}>
         <label htmlFor="email">
           Email
           <input
