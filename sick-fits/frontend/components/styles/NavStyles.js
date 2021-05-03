@@ -18,7 +18,7 @@ const NavStyles = styled.ul`
     background: none;
     border: 0;
     cursor: pointer;
-    @media (max-width: 800px) {
+    @media (max-width: 960px) {
       font-size: 1rem;
       padding: 0 10px;
     }
@@ -33,7 +33,7 @@ const NavStyles = styled.ul`
       top: 0;
       bottom: 0;
     }
-    @media (min-width: 540px) {
+    @media (min-width: 625px) {
       &:after {
         content: '';
         width: 0;
@@ -47,7 +47,7 @@ const NavStyles = styled.ul`
         margin-top: 2rem;
       }
     }
-    @media (max-width: 540px) {
+    @media (max-width: 625px) {
       &:after {
         content: '';
         width: 2px;
@@ -66,7 +66,7 @@ const NavStyles = styled.ul`
       &:after {
         width: calc(100% - 60px);
       }
-      @media (max-width: 700px) {
+      @media (max-width: 625px) {
         width: calc(100% - 10px);
       }
     }
@@ -74,7 +74,7 @@ const NavStyles = styled.ul`
   @media (max-width: 1300px) {
     font-size: 1.5rem;
   }
-  @media (max-width: 540px) {
+  @media (max-width: 625px) {
     border-top: 1px solid var(--lightGray);
   }
 `;

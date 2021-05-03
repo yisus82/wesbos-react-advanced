@@ -14,9 +14,15 @@ const SignOut = () => {
   });
 
   return (
-    <button type="button" onClick={signout}>
+    <a
+      href="/signout"
+      onClick={(event) => {
+        event.preventDefault();
+        signout();
+      }}
+    >
       Sign Out
-    </button>
+    </a>
   );
 };
 
