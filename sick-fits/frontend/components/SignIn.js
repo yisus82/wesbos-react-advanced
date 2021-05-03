@@ -39,6 +39,7 @@ const SignIn = () => {
     await signin();
     resetForm();
   };
+
   const error =
     data?.authenticateUserWithPassword?.__typename ===
     'UserAuthenticationWithPasswordFailure'
