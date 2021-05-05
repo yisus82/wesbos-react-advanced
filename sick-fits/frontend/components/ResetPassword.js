@@ -1,36 +1,39 @@
 import { useMutation } from '@apollo/client';
 import gql from 'graphql-tag';
+import PropTypes from 'prop-types';
 import { useState } from 'react';
 import useForm from '../lib/useForm';
 import DisplayError from './ErrorMessage';
 import FormStyles from './styles/FormStyles';
 
-const SIGNUP_MUTATION = gql`
-  mutation SIGNUP_MUTATION(
-    $name: String!
+const RESET_PASSWORD_MUTATION = gql`
+  mutation RESET_PASSWORD_MUTATION(
     $email: String!
+    $token: String!
     $password: String!
   ) {
-    createUser(data: { name: $name, email: $email, password: $password }) {
-      id
-      email
-      name
+    redeemUserPasswordResetToken(
+      email: $email
+      token: $token
+      password: $password
+    ) {
+      code
+      message
     }
   }
 `;
 
-const SignUp = () => {
+const ResetPassword = ({ token }) => {
   const { inputValues, handleChange, resetForm } = useForm({
     email: '',
-    name: '',
     password: '',
     confirmPassword: '',
   });
 
-  const [signup, { data, loading, error: signupError }] = useMutation(
-    SIGNUP_MUTATION,
+  const [resetPassword, { data, error: resetError, loading }] = useMutation(
+    RESET_PASSWORD_MUTATION,
     {
-      variables: inputValues,
+      variables: { ...inputValues, token },
     }
   );
 
@@ -43,34 +46,22 @@ const SignUp = () => {
       setFormError({ message: "Passwords don't match" });
       return;
     }
-    await signup()
-      .then(resetForm)
-      .catch(() => {});
+    await resetPassword();
+    resetForm();
   };
+
+  const error = data?.redeemUserPasswordResetToken?.code
+    ? data?.redeemUserPasswordResetToken
+    : formError || resetError;
 
   return (
     <FormStyles method="POST" onSubmit={handleSubmit}>
-      <h2>Sign Up For An Account</h2>
-      <DisplayError error={signupError || formError} />
+      <h2>Reset Password</h2>
+      <DisplayError error={error} />
       <fieldset disabled={loading} aria-busy={loading}>
-        {data?.createUser && (
-          <p>
-            Signed up with {data.createUser.email} - Please go ahead and sign
-            in!
-          </p>
+        {data?.redeemUserPasswordResetToken === null && (
+          <p>Success! You can now sign in with your new password</p>
         )}
-        <label htmlFor="name">
-          Name
-          <input
-            type="text"
-            name="name"
-            placeholder="Enter your name"
-            autoComplete="name"
-            required
-            value={inputValues.name}
-            onChange={handleChange}
-          />
-        </label>
         <label htmlFor="email">
           Email
           <input
@@ -109,10 +100,14 @@ const SignUp = () => {
             onChange={handleChange}
           />
         </label>
-        <button type="submit">Sign Up!</button>
+        <button type="submit">Reset Password!</button>
       </fieldset>
     </FormStyles>
   );
 };
 
-export default SignUp;
+ResetPassword.propTypes = {
+  token: PropTypes.string.isRequired,
+};
+
+export default ResetPassword;

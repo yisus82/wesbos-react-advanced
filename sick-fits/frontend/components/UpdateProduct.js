@@ -44,7 +44,7 @@ const UpdateProduct = ({ id }) => {
 
   const [
     updateProduct,
-    { data: mutationData, error: mutationError, loading: mutationLoading },
+    { error: mutationError, loading: mutationLoading },
   ] = useMutation(UPDATE_PRODUCT_MUTATION, {
     variables: {
       id,

@@ -1,5 +1,6 @@
 import { useMutation } from '@apollo/client';
 import gql from 'graphql-tag';
+import { useRouter } from 'next/router';
 import useForm from '../lib/useForm';
 import DisplayError from './ErrorMessage';
 import FormStyles from './styles/FormStyles';
@@ -34,10 +35,15 @@ const SignIn = () => {
     refetchQueries: [{ query: CURRENT_USER_QUERY }],
   });
 
+  const router = useRouter();
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     await signin();
     resetForm();
+    router.push({
+      pathname: `/`,
+    });
   };
 
   const error =
@@ -70,6 +76,7 @@ const SignIn = () => {
             name="password"
             placeholder="Enter your current password"
             autoComplete="current-password"
+            minLength="8"
             required
             value={inputValues.password}
             onChange={handleChange}
