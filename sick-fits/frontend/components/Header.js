@@ -25,7 +25,7 @@ const HeaderStyles = styled.header`
     grid-template-columns: auto 1fr;
     justify-content: space-between;
     align-items: stretch;
-    @media (max-width: 625px) {
+    @media (max-width: 700px) {
       display: flex;
       flex-direction: column;
       align-items: center;
