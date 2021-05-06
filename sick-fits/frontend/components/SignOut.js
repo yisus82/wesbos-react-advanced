@@ -23,7 +23,7 @@ const SignOut = () => {
         event.preventDefault();
         await signout();
         router.push({
-          pathname: `/`,
+          pathname: '/',
         });
       }}
     >

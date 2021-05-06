@@ -42,7 +42,7 @@ const SignIn = () => {
     await signin();
     resetForm();
     router.push({
-      pathname: `/`,
+      pathname: '/',
     });
   };
 
