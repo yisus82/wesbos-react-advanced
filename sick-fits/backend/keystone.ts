@@ -3,6 +3,7 @@ import { config, createSchema } from '@keystone-next/keystone/schema';
 import { statelessSessions, withItemData } from '@keystone-next/keystone/session';
 import 'dotenv/config';
 import { sendPasswordResetEmail } from './lib/mail';
+import { extendGraphqlSchema } from './mutations';
 import { CartItem } from './schemas/CartItem';
 import { Product } from './schemas/Product';
 import { ProductImage } from './schemas/ProductImage';
@@ -53,6 +54,7 @@ export default withAuth(config({
     ProductImage,
     CartItem,
   }),
+  extendGraphqlSchema,
   ui: {
     isAccessAllowed: ({ session }) => !!session?.data,
   },

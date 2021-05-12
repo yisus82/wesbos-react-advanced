@@ -8,5 +8,6 @@
     "activityBarBadge.background": "#FFC600",
     "statusBar.background": "#FFC600"
   },
-  "git.ignoreLimitWarning": true
+  "git.ignoreLimitWarning": true,
+  "jest.jestCommandLine": "yarn test"
 }
