@@ -14,7 +14,6 @@ class Document extends NextDocument {
   render = () => (
     <Html lang="en">
       <Head>
-        <title>Sick Fits</title>
         <link rel="shortcut icon" href="/static/favicon.png" />
       </Head>
       <body>

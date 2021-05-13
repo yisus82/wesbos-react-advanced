@@ -1,4 +1,5 @@
 import { ApolloProvider } from '@apollo/client';
+import Head from 'next/head';
 import Router from 'next/router';
 import NProgress from 'nprogress';
 import PropTypes from 'prop-types';
@@ -15,6 +16,9 @@ const App = ({ Component, pageProps, apollo }) => (
   <ApolloProvider client={apollo}>
     <CartStateProvider>
       <Page>
+        <Head>
+          <title>Sick Fits</title>
+        </Head>
         <Component {...pageProps} />
       </Page>
     </CartStateProvider>

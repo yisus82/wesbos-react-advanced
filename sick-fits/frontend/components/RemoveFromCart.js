@@ -7,6 +7,7 @@ const REMOVE_FROM_CART_MUTATION = gql`
   mutation REMOVE_FROM_CART_MUTATION($id: ID!) {
     deleteCartItem(id: $id) {
       id
+      __typename
     }
   }
 `;
@@ -21,9 +22,21 @@ const BigButtonStyles = styled.button`
   }
 `;
 
+const update = (cache, payload) => {
+  if (!payload?.data?.deleteCartItem) {
+    return;
+  }
+  cache.evict(cache.identify(payload.data.deleteCartItem));
+};
+
 const RemoveFromCart = ({ id }) => {
   const [deleteCartItem, { loading }] = useMutation(REMOVE_FROM_CART_MUTATION, {
     variables: { id },
+    update,
+    optimisticResponse: {
+      __typename: 'CartItem',
+      id,
+    },
   });
 
   return (
