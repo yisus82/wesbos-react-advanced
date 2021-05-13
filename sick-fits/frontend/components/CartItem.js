@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import formatMoney from '../lib/formatMoney';
+import RemoveFromCart from './RemoveFromCart';
 
 const CartItemStyles = styled.li`
   padding: 1rem 0;
@@ -26,17 +27,19 @@ const CartItem = ({ cartItem }) => (
     <div>
       <h3>{cartItem.product.name}</h3>
       <p>
-        {formatMoney(cartItem.quantity * cartItem.product.price)} -{' '}
+        {formatMoney(cartItem.quantity * cartItem.product.price)} {' - '}
         <em>
           {cartItem.quantity} &times; {formatMoney(cartItem.product.price)} each
         </em>
       </p>
     </div>
+    <RemoveFromCart id={cartItem.id} />
   </CartItemStyles>
 );
 
 CartItem.propTypes = {
   cartItem: PropTypes.shape({
+    id: PropTypes.string.isRequired,
     quantity: PropTypes.number.isRequired,
     product: PropTypes.shape({
       name: PropTypes.string.isRequired,
