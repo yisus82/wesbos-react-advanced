@@ -62,7 +62,7 @@ const UpdateProduct = ({ id }) => {
     await updateProduct();
     clearForm();
     router.push({
-      pathname: `/products/${id}`,
+      pathname: `/product/${id}`,
     });
   };
 
