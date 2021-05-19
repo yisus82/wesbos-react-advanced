@@ -2,6 +2,7 @@ import calcTotalPrice from '../lib/calcTotalPrice';
 import { useCart } from '../lib/cartState';
 import formatMoney from '../lib/formatMoney';
 import CartItem from './CartItem';
+import Checkout from './Checkout';
 import CartStyles from './styles/CartStyles';
 import CloseButtonStyles from './styles/CloseButtonStyles';
 import SupremeStyles from './styles/SupremeStyles';
@@ -29,7 +30,8 @@ const Cart = () => {
         ))}
       </ul>
       <footer>
-        <p>{formatMoney(calcTotalPrice(currentUser.cart))}</p>
+        <p>Total: {formatMoney(calcTotalPrice(currentUser.cart))}</p>
+        <Checkout />
       </footer>
     </CartStyles>
   );
