@@ -31,8 +31,8 @@ const Cart = () => {
       </ul>
       <footer>
         <p>Total: {formatMoney(calcTotalPrice(currentUser.cart))}</p>
-        <Checkout />
       </footer>
+      <Checkout />
     </CartStyles>
   );
 };

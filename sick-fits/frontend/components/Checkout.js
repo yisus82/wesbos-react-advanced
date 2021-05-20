@@ -1,6 +1,15 @@
-import { CardElement, Elements } from '@stripe/react-stripe-js';
+import {
+  CardElement,
+  Elements,
+  useElements,
+  useStripe,
+} from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
+import nProgress from 'nprogress';
+import { useState } from 'react';
 import styled from 'styled-components';
+import { useCart } from '../lib/cartState';
+import DisplayError from './ErrorMessage';
 import SickButtonStyles from './styles/SickButtonStyles';
 
 const CheckoutFormStyles = styled.form`
@@ -12,21 +21,70 @@ const CheckoutFormStyles = styled.form`
   grid-gap: 1rem;
 `;
 
-const stripe = loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY);
+const stripeLib = loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY);
 
-const Checkout = () => {
-  const handleSubmit = (event) => {
+const CheckoutForm = () => {
+  const [error, setError] = useState(undefined);
+  const [loading, setLoading] = useState(false);
+  const stripe = useStripe();
+  const elements = useElements();
+  const cart = useCart();
+
+  const handleSubmit = async (event) => {
+    // Block native form submission
     event.preventDefault();
+
+    // Disable form submission until Stripe.js has loaded
+    if (!stripe || !elements) {
+      return;
+    }
+
+    // Turn loader on
+    setLoading(true);
+
+    // Start page transition
+    nProgress.start();
+
+    // Clear previous error message (if existed)
+    setError(undefined);
+
+    // Elements knows how to find your CardElement because there can only ever be one of each type of element
+    const cardElement = elements.getElement(CardElement);
+
+    const { error, paymentMethod } = await stripe.createPaymentMethod({
+      type: 'card',
+      card: cardElement,
+    });
+
+    // Handle errors
+    if (error) {
+      setError(error);
+    } else {
+      console.log('[PaymentMethod]', paymentMethod);
+      // Close cart
+      cart.close();
+    }
+
+    // Turn loader off
+    setLoading(false);
+
+    // Finish page transition
+    nProgress.done();
   };
 
   return (
-    <Elements stripe={stripe}>
-      <CheckoutFormStyles onSubmit={handleSubmit}>
-        <CardElement />
-        <SickButtonStyles>Check out now</SickButtonStyles>
-      </CheckoutFormStyles>
-    </Elements>
+    <CheckoutFormStyles onSubmit={handleSubmit}>
+      <DisplayError error={error} />
+      <CardElement />
+      <SickButtonStyles disabled={loading}>Check out now</SickButtonStyles>
+    </CheckoutFormStyles>
   );
 };
+
+const Checkout = () => (
+  <Elements stripe={stripeLib}>
+    <CheckoutForm />
+  </Elements>
+);
 
 export default Checkout;
