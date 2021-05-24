@@ -8,9 +8,10 @@ const addToCart = async (
   context: KeystoneContext
 ): Promise<CartItemCreateInput> => {
   const session = context.session as Session;
-
-  if (!session.itemId) {
-    throw new Error('You must be logged in to do this!');
+  
+  if (!session?.itemId) {
+    console.error('You must be logged in to do this!');
+    return;
   }
 
   const allCartItems = await context.lists.CartItem.findMany({

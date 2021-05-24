@@ -14,10 +14,11 @@ export const User = list({
         itemView: { fieldMode: 'read' },
       },
     }),
+    orders: relationship({ ref: 'Order.user', many: true }),
   },
   ui: {
     listView: {
-      initialColumns: ['name', 'email', 'password'],
+      initialColumns: ['name', 'email', 'password', 'cart', 'orders'],
     },
   },
 });
