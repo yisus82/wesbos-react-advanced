@@ -1,6 +1,7 @@
 import { useMutation } from '@apollo/client';
 import gql from 'graphql-tag';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 import useForm from '../lib/useForm';
 import DisplayError from './ErrorMessage';
 import FormStyles from './styles/FormStyles';
@@ -25,12 +26,14 @@ const SIGNIN_MUTATION = gql`
 `;
 
 const SignIn = () => {
+  const [error, setError] = useState(undefined);
+
   const { inputValues, handleChange, resetForm } = useForm({
     email: '',
     password: '',
   });
 
-  const [signin, { data, loading }] = useMutation(SIGNIN_MUTATION, {
+  const [signin, { loading }] = useMutation(SIGNIN_MUTATION, {
     variables: inputValues,
     refetchQueries: [{ query: CURRENT_USER_QUERY }],
   });
@@ -39,18 +42,20 @@ const SignIn = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    await signin();
-    resetForm();
-    router.push({
-      pathname: '/',
-    });
+    const res = await signin();
+    if (
+      res.data?.authenticateUserWithPassword?.__typename ===
+      'UserAuthenticationWithPasswordFailure'
+    ) {
+      setError(res.data.authenticateUserWithPassword);
+    } else {
+      setError(undefined);
+      resetForm();
+      router.push({
+        pathname: '/',
+      });
+    }
   };
-
-  const error =
-    data?.authenticateUserWithPassword?.__typename ===
-    'UserAuthenticationWithPasswordFailure'
-      ? data?.authenticateUserWithPassword
-      : undefined;
 
   return (
     <FormStyles method="POST" onSubmit={handleSubmit}>
