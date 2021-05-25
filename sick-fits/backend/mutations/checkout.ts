@@ -50,10 +50,9 @@ const checkout = async (
       }
     `
   });
-
-  const amount = user.cart.reduce((total: number, item: CartItem) => item.product ? 
-    total + item.quantity * item.product.price : total, 0);
-  
+  const cartItems = user.cart.filter(cartItem => cartItem.product);
+  const amount = cartItems.reduce((total: number, cartItem: CartItem) => cartItem.product ? 
+    total + cartItem.quantity * cartItem.product.price : total, 0);
   const charge = await stripeConfig.paymentIntents.create({
     amount,
     currency: 'USD',
@@ -63,10 +62,30 @@ const checkout = async (
     console.error(error);
     throw new Error(error.message);
   });
-
-  console.log('charge :>> ', charge);
-
-  return null;
+  const orderItems = cartItems.map(cartItem => {
+    const orderItem = {
+      name: cartItem.product.name,
+      description: cartItem.product.description,
+      price: cartItem.product.price,
+      quantity: cartItem.quantity,
+      photo: { connect: { id: cartItem.product.photo.id } },
+    };
+    return orderItem;
+  });
+  const order = await context.lists.Order.createOne({
+    data: {
+      total: charge.amount,
+      charge: charge.id,
+      items: { create: orderItems },
+      user: { connect: { id: session.itemId }}
+    },
+    resolveFields: false,
+  });
+  const cartItemIds = cartItems.map(cartItem => cartItem.id);
+  await context.lists.CartItem.deleteMany({
+    ids: cartItemIds
+  });
+  return order;
 }
 
 export default checkout;
