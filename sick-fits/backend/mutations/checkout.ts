@@ -9,8 +9,27 @@ const graphql = String.raw;
 
 interface CartItem {
   product: {
+    name: string;
+    description: string;
     price: number;
+    photo: {
+      id: string;
+    }
   };
+  quantity: number;
+}
+
+interface OrderItem {
+  name: string;
+  description: string;
+  price: number;
+  photo: {
+    id: string;
+    image: {
+      id: string;
+      publicUrlTransformed: string;
+    }
+  }
   quantity: number;
 }
 
@@ -50,9 +69,8 @@ const checkout = async (
       }
     `
   });
-  const cartItems = user.cart.filter(cartItem => cartItem.product);
-  const amount = cartItems.reduce((total: number, cartItem: CartItem) => cartItem.product ? 
-    total + cartItem.quantity * cartItem.product.price : total, 0);
+  const amount = user.cart.reduce((total: number, item: CartItem) => item.product ? 
+    total + item.quantity * item.product.price : total, 0);
   const charge = await stripeConfig.paymentIntents.create({
     amount,
     currency: 'USD',
@@ -62,16 +80,20 @@ const checkout = async (
     console.error(error);
     throw new Error(error.message);
   });
-  const orderItems = cartItems.map(cartItem => {
+  const orderItems = user.cart.reduce((orderItems: OrderItem[], item: CartItem) => {
+    if (!item.product) {
+      return orderItems;
+    }
+
     const orderItem = {
-      name: cartItem.product.name,
-      description: cartItem.product.description,
-      price: cartItem.product.price,
-      quantity: cartItem.quantity,
-      photo: { connect: { id: cartItem.product.photo.id } },
+      name: item.product.name,
+      description: item.product.description,
+      price: item.product.price,
+      quantity: item.quantity,
+      photo: { connect: { id: item.product.photo.id } },
     };
-    return orderItem;
-  });
+    return [...orderItems, orderItem];
+  }, []);
   const order = await context.lists.Order.createOne({
     data: {
       total: charge.amount,
@@ -81,7 +103,7 @@ const checkout = async (
     },
     resolveFields: false,
   });
-  const cartItemIds = cartItems.map(cartItem => cartItem.id);
+  const cartItemIds = user.cart.map(cartItem => cartItem.id);
   await context.lists.CartItem.deleteMany({
     ids: cartItemIds
   });

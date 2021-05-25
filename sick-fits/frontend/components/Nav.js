@@ -11,7 +11,11 @@ const Nav = () => {
   const cart = useCart();
 
   const cartItems = useMemo(
-    () => user?.cart?.reduce((total, item) => total + item.quantity, 0),
+    () =>
+      user?.cart?.reduce(
+        (total, item) => (item.product ? total + item.quantity : total),
+        0
+      ),
     [user?.cart]
   );
 

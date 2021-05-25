@@ -25,9 +25,11 @@ const Cart = () => {
         </CloseButtonStyles>
       </header>
       <ul>
-        {currentUser.cart.map((cartItem) => (
-          <CartItem key={cartItem.id} cartItem={cartItem} />
-        ))}
+        {currentUser.cart.map((cartItem) =>
+          cartItem.product ? (
+            <CartItem key={cartItem.id} cartItem={cartItem} />
+          ) : null
+        )}
       </ul>
       <footer>
         <p>Total: {formatMoney(calcTotalPrice(currentUser.cart))}</p>

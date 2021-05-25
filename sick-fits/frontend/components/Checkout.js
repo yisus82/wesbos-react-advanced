@@ -7,12 +7,14 @@ import {
 } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import gql from 'graphql-tag';
+import { useRouter } from 'next/router';
 import nProgress from 'nprogress';
 import { useState } from 'react';
 import styled from 'styled-components';
 import { useCart } from '../lib/cartState';
 import DisplayError from './ErrorMessage';
 import SickButtonStyles from './styles/SickButtonStyles';
+import { CURRENT_USER_QUERY } from './User';
 
 const CheckoutFormStyles = styled.form`
   box-shadow: 0 1px 2px 2px rgba(0, 0, 0, 0.04);
@@ -43,11 +45,15 @@ const CheckoutForm = () => {
   const [error, setError] = useState(undefined);
   const [loading, setLoading] = useState(false);
   const [checkout, { error: graphqlError }] = useMutation(
-    CREATE_ORDER_MUTATION
+    CREATE_ORDER_MUTATION,
+    {
+      refetchQueries: [{ query: CURRENT_USER_QUERY }],
+    }
   );
   const stripe = useStripe();
   const elements = useElements();
   const cart = useCart();
+  const router = useRouter();
 
   const handleSubmit = async (event) => {
     // Block native form submission
@@ -79,9 +85,17 @@ const CheckoutForm = () => {
     if (error) {
       setError(error);
     } else {
+      // Create order
       const order = await checkout({
         variables: {
           token: paymentMethod.id,
+        },
+      });
+      // Redirect to order page
+      router.push({
+        pathname: `/order/[id]`,
+        query: {
+          id: order.data.checkout.id,
         },
       });
       // Close cart
