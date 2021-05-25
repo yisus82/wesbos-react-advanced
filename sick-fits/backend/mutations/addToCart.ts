@@ -10,8 +10,7 @@ const addToCart = async (
   const session = context.session as Session;
   
   if (!session?.itemId) {
-    console.error('You must be logged in to do this!');
-    return;
+    throw new Error('You must be logged in to do this!');
   }
 
   const allCartItems = await context.lists.CartItem.findMany({

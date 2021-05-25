@@ -17,25 +17,27 @@ const CartItemStyles = styled.li`
   }
 `;
 
-const CartItem = ({ cartItem }) => (
-  <CartItemStyles>
-    <img
-      width="100"
-      src={cartItem.product.photo.image.publicUrlTransformed}
-      alt={cartItem.product.description}
-    />
-    <div>
-      <h3>{cartItem.product.name}</h3>
-      <p>
-        {formatMoney(cartItem.quantity * cartItem.product.price)} {' - '}
-        <em>
-          {cartItem.quantity} &times; {formatMoney(cartItem.product.price)} each
-        </em>
-      </p>
-    </div>
-    <RemoveFromCart id={cartItem.id} />
-  </CartItemStyles>
-);
+const CartItem = ({ cartItem }) =>
+  cartItem.product ? (
+    <CartItemStyles>
+      <img
+        width="100"
+        src={cartItem.product.photo.image.publicUrlTransformed}
+        alt={cartItem.product.description}
+      />
+      <div>
+        <h3>{cartItem.product.name}</h3>
+        <p>
+          {formatMoney(cartItem.quantity * cartItem.product.price)} {' - '}
+          <em>
+            {cartItem.quantity} &times; {formatMoney(cartItem.product.price)}{' '}
+            each
+          </em>
+        </p>
+      </div>
+      <RemoveFromCart id={cartItem.id} />
+    </CartItemStyles>
+  ) : null;
 
 CartItem.propTypes = {
   cartItem: PropTypes.shape({
