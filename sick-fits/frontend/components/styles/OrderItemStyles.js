@@ -11,16 +11,22 @@ const OrderItemStyles = styled.li`
     margin-bottom: 2rem;
     padding-bottom: 2rem;
   }
-
+  a {
+    display: block;
+    text-align: center;
+    margin: 1.5rem 0;
+    background-color: var(--lightGray);
+  }
   .images {
-    display: grid;
-    grid-gap: 10px;
-    grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     margin-top: 1rem;
     img {
-      height: 200px;
-      object-fit: cover;
-      width: 100%;
+      max-height: 150px;
+      object-fit: contain;
+      max-width: 150px;
+      margin: 1rem;
     }
   }
   .order-meta {
