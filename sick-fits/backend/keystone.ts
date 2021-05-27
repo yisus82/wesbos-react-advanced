@@ -1,6 +1,9 @@
 import { createAuth } from '@keystone-next/auth';
 import { config, createSchema } from '@keystone-next/keystone/schema';
-import { statelessSessions, withItemData } from '@keystone-next/keystone/session';
+import {
+  statelessSessions,
+  withItemData,
+} from '@keystone-next/keystone/session';
 import 'dotenv/config';
 import { sendPasswordResetEmail } from './lib/mail';
 import { extendGraphqlSchema } from './mutations';
@@ -31,41 +34,43 @@ const { withAuth } = createAuth({
   passwordResetLink: {
     async sendToken(args) {
       await sendPasswordResetEmail(args.token, args.identity);
-    }
-  }
-})
-
-// @ts-ignore
-export default withAuth(config({
-  server: {
-    cors: {
-      origin: [process.env.FRONTEND_URL],
-      credentials: true,
     },
   },
-  db: {
-    adapter: 'mongoose',
-    url: databaseURL,
-    onConnect: async (keystone) => {
-      if (process.argv.includes('--seed-data')) {
-        await insertSeedData(keystone);
-      }
-    }
-  },
-  lists: createSchema({
-    User,
-    Product,
-    ProductImage,
-    CartItem,
-    OrderItem,
-    Order,
-    Role,
-  }),
-  extendGraphqlSchema,
-  ui: {
-    isAccessAllowed: ({ session }) => !!session?.data,
-  },
-  session: withItemData(statelessSessions(sessionConfig), {
-    User: `id name email role { ${permissionsList.join(' ')} }`,
-  }),
-}));
+});
+
+export default withAuth(
+  // @ts-ignore
+  config({
+    server: {
+      cors: {
+        origin: [process.env.FRONTEND_URL],
+        credentials: true,
+      },
+    },
+    db: {
+      adapter: 'mongoose',
+      url: databaseURL,
+      onConnect: async (keystone) => {
+        if (process.argv.includes('--seed-data')) {
+          await insertSeedData(keystone);
+        }
+      },
+    },
+    lists: createSchema({
+      User,
+      Product,
+      ProductImage,
+      CartItem,
+      OrderItem,
+      Order,
+      Role,
+    }),
+    extendGraphqlSchema,
+    ui: {
+      isAccessAllowed: ({ session }) => !!session?.data,
+    },
+    session: withItemData(statelessSessions(sessionConfig), {
+      User: `id name email role { ${permissionsList.join(' ')} }`,
+    }),
+  })
+);
