@@ -5,6 +5,7 @@ import 'dotenv/config';
 import { sendPasswordResetEmail } from './lib/mail';
 import { extendGraphqlSchema } from './mutations';
 import { CartItem } from './schemas/CartItem';
+import { permissionsList } from './schemas/fields';
 import { Order } from './schemas/Order';
 import { OrderItem } from './schemas/OrderItem';
 import { Product } from './schemas/Product';
@@ -65,6 +66,6 @@ export default withAuth(config({
     isAccessAllowed: ({ session }) => !!session?.data,
   },
   session: withItemData(statelessSessions(sessionConfig), {
-    User: 'id name email',
+    User: `id name email role { ${permissionsList.join(' ')} }`,
   }),
 }));
