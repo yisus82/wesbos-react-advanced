@@ -15,10 +15,13 @@ export const User = list({
       },
     }),
     orders: relationship({ ref: 'Order.user', many: true }),
+    role: relationship({
+      ref: 'Role.assignedTo',
+    }),
   },
   ui: {
     listView: {
-      initialColumns: ['name', 'email', 'password', 'cart', 'orders'],
+      initialColumns: ['name', 'email', 'password', 'cart', 'orders', 'role'],
     },
   },
 });

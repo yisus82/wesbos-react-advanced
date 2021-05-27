@@ -9,6 +9,7 @@ import { Order } from './schemas/Order';
 import { OrderItem } from './schemas/OrderItem';
 import { Product } from './schemas/Product';
 import { ProductImage } from './schemas/ProductImage';
+import { Role } from './schemas/Role';
 import { User } from './schemas/User';
 import insertSeedData from './seed-data';
 
@@ -57,6 +58,7 @@ export default withAuth(config({
     CartItem,
     OrderItem,
     Order,
+    Role,
   }),
   extendGraphqlSchema,
   ui: {
