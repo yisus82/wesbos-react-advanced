@@ -30,7 +30,10 @@ export const permissions: Permissions = {
 export const rules = {
   canManageProducts({
     session,
-  }: ListAccessArgs): boolean | { user: { id: string } } {
+  }: ListAccessArgs): boolean | { user: { id: string; }; } {
+    if (!isSignedIn({ session })) {
+      return false;
+    }
     // 1. Do they have the permission of canManageProducts
     if (permissions.canManageProducts({ session })) {
       return true;
@@ -44,5 +47,27 @@ export const rules = {
     }
     // They should only see available products (based on the status field)
     return { status: 'AVAILABLE' };
+  },
+  canOrder({ session }: ListAccessArgs) {
+    if (!isSignedIn({ session })) {
+      return false;
+    }
+    // 1. Do they have the permission of canManageCart
+    if (permissions.canManageCart({ session })) {
+      return true;
+    }
+    // 2. If not, do they own this item?
+    return { user: { id: session.itemId } };
+  },
+  canManageOrderItems({ session }: ListAccessArgs) {
+    if (!isSignedIn({ session })) {
+      return false;
+    }
+    // 1. Do they have the permission of canManageCart
+    if (permissions.canManageCart({ session })) {
+      return true;
+    }
+    // 2. If not, do they own this item?
+    return { order: { user: { id: session.itemId } } };
   },
 };
